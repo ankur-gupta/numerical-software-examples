@@ -1,3 +1,6 @@
+# From this stackoverflow post:
+# https://stackoverflow.com/questions/34291639/multiple-scipy-integrate-ode-instances
+
 from __future__ import division, print_function
 
 import sys
