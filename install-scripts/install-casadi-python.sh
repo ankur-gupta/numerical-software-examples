@@ -17,5 +17,12 @@ mkdir -p ${install_location}
 tar -xvf ${tarball_location} -C ${install_location}
 
 
+# # Manual steps:
+# # 1. Add location to PYTHONPATH. This depends on your shell.
+# #    For fish shell, add these lines to ~/.config/fish/config.fish
+# set -g -x PYTHONPATH $PYTHONPATH ~/toolbox/casadi/python
+# # 2. Import casadi in your python code as usual
+# import casadi
+
 
 

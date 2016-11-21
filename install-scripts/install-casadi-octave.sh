@@ -16,6 +16,11 @@ mkdir -p ${install_location}
 # Extract tarball in the specified location
 tar -xvf ${tarball_location} -C ${install_location}
 
+# # Manual steps:
+# # 1. Add this line to your ~/.octaverc file
+# addpath('~/toolbox/casadi/octave');
+# # 2. Import casadi in your code using this line
+# import casadi.*
 
 
 
