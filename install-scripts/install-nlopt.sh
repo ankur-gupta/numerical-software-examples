@@ -65,7 +65,7 @@ cd ${install_location}
 # For fish shell, add these lines to ~/.config/fish/config.fish
 # Note that this depends on the install location.
 echo "Add this line to your fish shell (if you did not change install location): "
-echo 'set -g -x PYTHONPATH $PYTHONPATH ~/toolbox/(uname)/nlopt/lib/python2.7/site-packages'
+echo 'set -g -x PYTHONPATH ~/toolbox/(uname)/nlopt/lib/python2.7/site-packages:"$PYTHONPATH"'
 
 # Step 5(b): Add to Octave Path
 echo 'Add this line to your ~/.octaverc:'

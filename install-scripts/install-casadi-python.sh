@@ -2,12 +2,12 @@
 
 # Location of tar.gz file containing source code
 # Download from https://github.com/casadi/casadi/wiki/InstallationInstructions
-tarball_location="$HOME/Downloads/casadi-py27-np1.9.1-v3.1.0.tar.gz"
+tarball_location="$HOME/Downloads/casadi-py27-np1.9.1-v3.1.1.tar.gz"
 
 
 # Install location folder
 # Note that this folder will be deleted and overwritten if it already exists
-install_location="$HOME/toolbox/casadi/python"
+install_location="${HOME}/toolbox/`uname`/casadi/python"
 
 # Clear out space for this installation
 rm -rf ${install_location}
@@ -17,12 +17,12 @@ mkdir -p ${install_location}
 tar -xvf ${tarball_location} -C ${install_location}
 
 
-# # Manual steps:
-# # 1. Add location to PYTHONPATH. This depends on your shell.
-# #    For fish shell, add these lines to ~/.config/fish/config.fish
-# set -g -x PYTHONPATH $PYTHONPATH ~/toolbox/casadi/python
-# # 2. Import casadi in your python code as usual
-# import casadi
 
+# Lets you "import nlopt" from anywhere.
+# For fish shell, add these lines to ~/.config/fish/config.fish
+# Note that this depends on the install location.
+echo "Add this line to your fish shell (if you did not change install location): "
+echo 'set -g -x PYTHONPATH ~/toolbox/(uname)/casadi/python:"$PYTHONPATH"'
 
-
+# Run example:
+# python ~/toolbox/numerical-software-examples/examples/casadi/python/casadi_example.py

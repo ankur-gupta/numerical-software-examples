@@ -2,12 +2,12 @@
 
 # Location of tar.gz file containing source code
 # Download from https://github.com/casadi/casadi/wiki/InstallationInstructions
-tarball_location="$HOME/Downloads/casadi-octave-v3.1.0.tar.gz"
+tarball_location="$HOME/Downloads/casadi-octave-v3.1.1.tar.gz"
 
 
 # Install location folder
 # Note that this folder will be deleted and overwritten if it already exists
-install_location="$HOME/toolbox/casadi/octave"
+install_location="${HOME}/toolbox/`uname`/casadi/octave"
 
 # Clear out space for this installation
 rm -rf ${install_location}
