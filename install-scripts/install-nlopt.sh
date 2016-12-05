@@ -69,7 +69,7 @@ echo 'set -g -x PYTHONPATH ~/toolbox/(uname)/nlopt/lib/python2.7/site-packages:"
 
 # Step 5(b): Add to Octave Path
 echo 'Add this line to your ~/.octaverc:'
-echo 'addpath(genpath(['~/toolbox/' uname.sysname, '/nlopt']));'
+echo 'addpath(genpath(['~/toolbox/' uname.sysname '/nlopt']));'
 
 
 # # Step 6: Test example script. Manual step.

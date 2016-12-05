@@ -18,7 +18,7 @@ tar -xvf ${tarball_location} -C ${install_location}
 
 # # Manual steps:
 # # 1. Add this line to your ~/.octaverc file
-# addpath('~/toolbox/casadi/octave');
+# addpath(genpath(['~/toolbox/' uname.sysname '/casadi/octave']));
 # # 2. Import casadi in your code using this line
 # import casadi.*
 

@@ -46,4 +46,4 @@ echo "Enter this as your toolbox location: ${octave_install_location}"
 
 # Manual Add to Octave Path
 echo 'Add this line to your ~/.octaverc:'
-echo 'addpath(genpath(['~/toolbox/' uname.sysname, '/sundials/octave'])); startup_STB'
+echo 'addpath(genpath(['~/toolbox/' uname.sysname '/sundials/octave'])); startup_STB'
