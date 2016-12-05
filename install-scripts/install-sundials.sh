@@ -2,7 +2,7 @@
 
 # Location of tar.gz file containing source code
 # Download from https://github.com/casadi/casadi/wiki/InstallationInstructions
-tarball_location="$HOME/toolbox/sources/sundials-2.5.0-corrected.tar.gz"
+tarball_location="$HOME/toolbox/sources/sundials-2.5.0-ankur2.tar.gz"
 
 # Location of temp folder
 temp_folder="/tmp/sundials"
@@ -37,6 +37,11 @@ make
 make install
 
 # Install Octave/MATLAB toolbox
+# If you see a copyfile issue, it could be due to a copyfile bug (Octave 3.6.2 and earlier)
+# Or, one of the .mex files was not correctly built.
+# This is usually kim.mex.
+# Modify return -> return(0) in sundialsTB/kinsol/kim/src/kim.c (lines 682 and 810).
+# See http://sundials.2283335.n4.nabble.com/SundialsTB-not-compiling-on-OSX-td4653061.html
 cd ${temp_folder}/*/sundialsTB
 echo 'Run octave 3.6.3+ (3.6.2. has a copyfile bug) and install the toolbox.'
 echo "cd ${temp_folder}/*/sundialsTB"
