@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 # Step 0: Install location
 install_location="${HOME}/toolbox/`uname`/nlopt"

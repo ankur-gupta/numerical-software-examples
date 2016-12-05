@@ -1,35 +1,49 @@
-#!/bin/sh
+#!/bin/bash -e
 
-ver=5 #for 2.5.0
+# Location of tar.gz file containing source code
+# Download from https://github.com/casadi/casadi/wiki/InstallationInstructions
+tarball_location="$HOME/toolbox/sources/sundials-2.5.0-corrected.tar.gz"
 
-# Location of installer files
-loc0="$HOME/Downloads/sundials-2.${ver}.0"
+# Location of temp folder
+temp_folder="/tmp/sundials"
 
-# Location of installed C files
-locC="$HOME/toolbox/sundials2${ver}0"
+# Install location folder for SUNDIALS C files
+# Note that this folder will be deleted and overwritten if it already exists
+install_location="${HOME}/toolbox/`uname`/sundials"
+c_install_location="${install_location}/c"
 
-# Location of installed toolbox
-locTB="$HOME/toolbox/sundials2${ver}0TB"
+# Install location folder for SUNDIALS Octave/MATLAB files
+# Note that this folder will be deleted and overwritten if it already exists
+octave_install_location="${install_location}/octave"
 
-echo "Installing Sundials 2.${ver}.0 ..."
+# Clear out space for this installation
+rm -rf ${install_location}
+rm -rf ${c_install_location}
+rm -rf ${octave_install_location}
+mkdir -p ${c_install_location}
+mkdir -p ${octave_install_location}
 
-echo "Removing existing installer files at ${loc0} ..."
-rm -rf $loc0
-echo "Removing existing installed C files at ${locC} ..."
-rm -rf $locC
-echo "Removing existing installed toolbox at ${locTB} ..."
-rm -rf $locTB
+# Extract tarball in the specified location
+rm -rf ${temp_folder}
+mkdir -p ${temp_folder}
+tar -xvf ${tarball_location} -C ${temp_folder}
 
-echo "Unzipping a new copy of installer files at ${loc0} ..."
-cd $HOME/Downloads
-tar -xf sundials-2.${ver}.0.tar.gz
-
-cd $loc0
-# Ubuntu 12.10 doesn't seem to have g77. So I need to disable fortran
-./configure --prefix=${locC} --enable-examples --disable-mpi --disable-fcmix --with-cflags="-O3 -fPIC"
+# Build and install the C files
+cd ${temp_folder}/*
+# Ubuntu 12.10 doesn't seem to have g77. So I need to disable fortran.
+./configure --prefix=${c_install_location} --enable-examples \
+    --disable-mpi --disable-fcmix --with-cflags="-O3 -fPIC"
 make
 make install
 
-mkdir $locTB
-cd $loc0/sundialsTB
-echo "Run octave 3.6.3 (3.6.2. has a copyfile bug) and install the toolbox."
+# Install Octave/MATLAB toolbox
+cd ${temp_folder}/*/sundialsTB
+echo 'Run octave 3.6.3+ (3.6.2. has a copyfile bug) and install the toolbox.'
+echo "cd ${temp_folder}/*/sundialsTB"
+echo 'Install Octave/MATLAB toolbox executing `install_STB` in Octave'
+echo "Enter this as your toolbox location: ${octave_install_location}"
+
+
+# Manual Add to Octave Path
+echo 'Add this line to your ~/.octaverc:'
+echo 'addpath(genpath(['~/toolbox/' uname.sysname, '/sundials/octave'])); startup_STB'
