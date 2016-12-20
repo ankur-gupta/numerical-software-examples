@@ -18,10 +18,11 @@ meas = x
 system = cp.system.System(x=x, p=k, f=xdot, phi=meas)
 
 # Simulate the Lotka Volterra System to create dummy data
-t = np.linspace(0, 50, 51)
+t = np.linspace(0, 100, 101)
 # k_actual = [5, 4, 3]  # This causes ODE solver to fail.
-k_actual = [10, 1, 1]
-x0 = [100, 100]
+# k_actual = [10, 1, 1]
+k_actual = [0.5, 0.0025, 0.3]
+x0 = [71, 79]
 sim = cp.sim.Simulation(system, k_actual)
 sim.run_system_simulation(time_points=t, x0=x0)
 ymeas = sim.simulation_results.full()
