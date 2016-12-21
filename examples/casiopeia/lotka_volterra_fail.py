@@ -53,12 +53,12 @@ def get_lhs_samples(bounds, nsamples):
             'upper' and 'lower' bounds.
         nsamples (int): number of samples to generate
 
-        Return
+        Returns
         -------
         np.ndarray of size (nsamples x nparam)
     '''
     nparam = bounds.shape[0]
-    lhs_design = lhs(n=nparam, samples=nsamples)
+    lhs_design = lhs(n=nparam, samples=nsamples, criterion='center')
     slope_vec = (bounds['upper'] - bounds['lower']).values
     slope_vec = slope_vec.reshape((1, nparam))
     param_samples = bounds['lower'].values.reshape((1, nparam)) + \
@@ -83,12 +83,12 @@ system = cp.system.System(x=x, p=k, f=xdot, phi=meas)
 
 # Time points at which to simulate the Lotka Volterra system
 t = np.linspace(0, 50, 51)
-x0 = [100, 100]
+x0 = [71, 79]
 
 # Find which parameter values cause the CVODES to fail. casiopeia uses CVODES.
 # See https://github.com/adbuerger/casiopeia/blob/master/casiopeia/sim.py#L128
 lower = 1e-6
-upper = 1e+1
+upper = 5
 bounds = pd.DataFrame({'param': ['k{}'.format(i) for i in xrange(1, 4)],
                        'lower': lower * np.ones(nparam),
                        'upper': upper * np.ones(nparam)})
