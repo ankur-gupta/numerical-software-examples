@@ -96,8 +96,16 @@ bounds = pd.DataFrame({'param': ['k{}'.format(i) for i in xrange(1, 4)],
 
 # We will use Latin Hypercube design to generate parameter sets at which
 # we will test the system simulation.
-nsamples = 10000
+nsamples = 1000
 param_samples = get_lhs_samples(bounds, nsamples)
+
+# Round off to fewer decimals to avoid loss of precision when saving.
+# Remove duplicate rows.
+param_samples = np.round(param_samples, decimals=1)
+param_samples[param_samples == 0] = 0.1
+param_samples = np.array(list(set([tuple(row) for row in param_samples])))
+nsamples = param_samples.shape[0]
+
 samples = {}
 bar = Bar('Simulating System', max=param_samples.shape[0])
 for param in param_samples:
