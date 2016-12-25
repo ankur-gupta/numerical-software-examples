@@ -68,65 +68,26 @@ for i=1:numel(k1mat)
     success(i) = status == 0;
 end
 
+
+% Create a tabular format to save
+result = [k1mat(:) k2mat(:) k3mat(:) success(:)]
+save result.dat result
+csvwrite('result.csv', result)
+
+% Make a 3d plot showing failure parameters in red circles.
+k1mat = result(:, 1);
+k2mat = result(:, 2);
+k3mat = result(:, 3);
+success = result(:, 4);
 figure(1)
 clf()
-plot3(k1mat(success), k2mat(success), k3mat(success), 'bo')
+plot3(k1mat(find(success)), k2mat(find(success)), k3mat(find(success)), 'b.')
 hold on
 grid on
-plot3(k1mat(~success), k2mat(~success), k3mat(~success), 'ro')
+plot3(k1mat(find(!success)), k2mat(find(!success)), k3mat(find(!success)), 'ro')
 xlabel('k1')
 ylabel('k2')
 zlabel('k3')
-
-disp('Failure Parameters:')
-[k1mat(~success) k2mat(~success) k3mat(~success)]
-
-
-
-
-
-
-% % % Read the csv file containing failure parameters
-% failure_params = csvread('../../casiopeia/failure_params_lower1e-06_upper5.csv');
-% failure_params(1, :)= [];    % Remove the header
-% failure_params = failure_params(randperm(rows(failure_params))(1:20), :)
-% success_params = csvread('../../casiopeia/success_params_lower1e-06_upper5.csv');
-% success_params(1, :)= [];    % Remove the header
-% success_params = success_params(randperm(rows(success_params))(1:20), :)
-
-% % Time points for simulation
-% t = 0:1:100;
-% [x, status, msg] = solve_using_cvode(theta0, t, x0, detfun);
-% status
-% msg
-
-% success_logical_for_failure_params = zeros(rows(failure_params), 1);
-% for i = 1:rows(failure_params)
-%     disp(i)
-%     % odefun = @(x,t) detfun(t, x, failure_params(i, :), 1);
-%     % [x, istate, msg] = lsode(odefun, x0, t);
-%     % success_logical_for_failure_params(i, 1) = istate == 2;
-%     [x, status, msg] = solve_using_cvode(failure_params(i, :), t, x0, detfun);
-%     success_logical_for_failure_params(i, 1) = status == 0;
-% end
-
-% success_logical_for_success_params = zeros(rows(success_params), 1);
-% for i = 1:rows(success_params)
-%     disp(i)
-%     % odefun = @(x, t) detfun(t, x, success_params(i, :), 1);
-%     % [x, istate, msg] = lsode(odefun, x0, t);
-%     % success_logical_for_success_params(i, 1) = istate == 2;
-%     [x, status, msg] = solve_using_cvode(success_params(i, :), t, x0, detfun);
-%     success_logical_for_success_params(i, 1) = status == 0;
-% end
-
-
-% [success_logical_for_failure_params success_logical_for_success_params]
-
-
-
-
-
 
 
 

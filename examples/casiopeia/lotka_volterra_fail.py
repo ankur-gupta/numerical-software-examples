@@ -66,6 +66,27 @@ def get_lhs_samples(bounds, nsamples):
     return param_samples
 
 
+def get_grid_samples(bounds, interval):
+    ''' Generate parameter samples at a systematic grid.
+
+        Args
+        ----
+        bounds (pd.DataFrame): dataframe (nparam x 3). Each row contains
+            'upper' and 'lower' bounds.
+        interval (float): increment between two successive values of a
+            parameter. This is common for all parameters.Lotka
+
+        Returns
+        --------
+       np.ndarray of size (nsamples x nparam)
+    '''
+    grid_vector_list = [np.arange(row['lower'], row['upper'], interval)
+                        for _, row in bounds.iterrows()]
+    samples_list = np.meshgrid(*grid_vector_list)
+    param_samples = np.array([x.flatten() for x in samples_list]).T
+    return param_samples
+
+
 # Lotka Volterra from Boys. et al (2008)
 # X1 --> 2*X1 ; k1
 # X1 + X2 --> 2*X2 ; k2
@@ -82,13 +103,13 @@ meas = x
 system = cp.system.System(x=x, p=k, f=xdot, phi=meas)
 
 # Time points at which to simulate the Lotka Volterra system
-t = np.linspace(0, 50, 51)
+t = np.linspace(0, 100, 101)
 x0 = [71, 79]
 
 # Find which parameter values cause the CVODES to fail. casiopeia uses CVODES.
 # See https://github.com/adbuerger/casiopeia/blob/master/casiopeia/sim.py#L128
-lower = 1e-6
-upper = 5
+lower = 0.1
+upper = 3.0
 bounds = pd.DataFrame({'param': ['k{}'.format(i) for i in xrange(1, 4)],
                        'lower': lower * np.ones(nparam),
                        'upper': upper * np.ones(nparam)})
@@ -97,7 +118,8 @@ bounds = pd.DataFrame({'param': ['k{}'.format(i) for i in xrange(1, 4)],
 # We will use Latin Hypercube design to generate parameter sets at which
 # we will test the system simulation.
 nsamples = 1000
-param_samples = get_lhs_samples(bounds, nsamples)
+# param_samples = get_lhs_samples(bounds, nsamples)
+param_samples = get_grid_samples(bounds, 0.1)
 
 # Round off to fewer decimals to avoid loss of precision when saving.
 # Remove duplicate rows.
