@@ -172,6 +172,7 @@ end
 % Create a tabular format to save
 result = [k1mat(:) k2mat(:) k3mat(:) lsode_success(:) cvode_success(:) cvode_sens_success(:)]
 save result.dat result
+save -binary result.mat result
 
 % Make a 3d plot showing failure parameters in red circles.
 k1mat = result(:, 1);
@@ -179,26 +180,28 @@ k2mat = result(:, 2);
 k3mat = result(:, 3);
 lsode_success = result(:, 4);
 cvode_success = result(:, 5);
-cvode_with_success = result(:, 6);
+cvode_sens_success = result(:, 6);
 
-% both_success = cvode_success & lsode_success;
-% both_failure = ~cvode_success & ~lsode_success;
-% cvode_success_lsode_failure = cvode_success & ~lsode_success;
-% cvode_failure_lsode_success = ~cvode_success & lsode_success;
-% figure(2)
-% clf()
-% plot3(k1mat(find(both_success)), k2mat(find(both_success)), ...
-%       k3mat(find(both_success)), 'b.')
-% hold on
-% plot3(k1mat(find(both_failure)), k2mat(find(both_failure)), ...
-%       k3mat(find(both_failure)), 'ro')
-% plot3(k1mat(find(cvode_success_lsode_failure)), k2mat(find(cvode_success_lsode_failure)), ...
-%       k3mat(find(cvode_success_lsode_failure)), 'g*')
-% plot3(k1mat(find(cvode_failure_lsode_success)), k2mat(find(cvode_failure_lsode_success)), ...
-%       k3mat(find(cvode_failure_lsode_success)), 'm*')
-% grid on
-% xlabel('k1')
-% ylabel('k2')
-% zlabel('k3')
+all_success = lsode_success & cvode_success & cvode_sens_success;
+all_failure = ~lsode_success & ~cvode_success & ~cvode_sens_success;
+cvode_failure = lsode_success & ~cvode_success;
+sens_failure = cvode_success & ~cvode_sens_success;
 
+figure(2)
+clf()
+plot3(k1mat(find(all_success)), k2mat(find(all_success)), ...
+      k3mat(find(all_success)), 'b.')
+hold on
+plot3(k1mat(find(all_failure)), k2mat(find(all_failure)), ...
+      k3mat(find(all_failure)), 'ko')
+plot3(k1mat(find(cvode_failure)), k2mat(find(cvode_failure)), ...
+      k3mat(find(cvode_failure)), 'g*')
+plot3(k1mat(find(sens_failure)), k2mat(find(sens_failure)), ...
+      k3mat(find(sens_failure)), 'r*')
+grid on
+xlabel('k1')
+ylabel('k2')
+zlabel('k3')
+legend('All Success', 'All Failure', 'LSODE success, CVODE failure', ...
+       'CVODE Success, Sens Failure')
 
