@@ -13,6 +13,8 @@ k = ca.MX.sym('k', 2, 1)
 x = ca.MX.sym('x', 3, 1)
 
 # RHS of the ODE
+# Works for version casadi v3.1.1. Check ca.__version__.
+# For casadi v2.4.3, put all args within a list.
 xdot = ca.vertcat(-k[0] * x[0], k[0] * x[0] - k[1] * x[1], k[1] * x[1])
 
 # ODE dict
