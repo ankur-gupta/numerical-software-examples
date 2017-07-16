@@ -1,5 +1,13 @@
+# casadi v3.2.0 onwards some compatibility problems with casiopeia were
+# fixed.
 import casadi as ca
-import casiopeia as cp  # casiopeia requires Casadi v2.4.3. Modify PYTHONPATH.
+
+# Casiopeia used to require Casadi v2.4.3, which required PYTHONPATH
+# to be modified. Modifying PYTHONPATH caused other problems because no
+# PYTHONPATH variable was even set if not for casiopeia/casadi v2.4.3 issue.
+# With casiopeia v0.2.0 and casadi v3.2.0, we no longer need to use older
+# versions and no PYTHONPATH modifications or even setup is needed.
+import casiopeia as cp
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -12,8 +20,8 @@ import matplotlib.pyplot as plt
 # Specify the Lotka Volterra system as a graph
 x = ca.MX.sym('x', 2, 1)
 k = ca.MX.sym('k', 3, 1)
-xdot = ca.vertcat([k[0] * x[0] - k[1] * x[0] * x[1],
-                   k[1] * x[0] * x[1] - k[2] * x[1]])
+xdot = ca.vertcat(k[0] * x[0] - k[1] * x[0] * x[1],
+                  k[1] * x[0] * x[1] - k[2] * x[1])
 meas = x
 system = cp.system.System(x=x, p=k, f=xdot, phi=meas)
 
@@ -31,6 +39,7 @@ ymeas = sim.simulation_results.full()
 # We use "multiple_shooting" as the discretization method because
 # "collocation" does not return the correct parameter estimates.
 # Multiple shooting performs better in prediction.
+# FIXME: This used to work but now it fails!
 pe = cp.pe.LSq(system=system, time_points=t, xinit=ymeas, ydata=ymeas,
                pinit=k_actual, discretization_method='multiple_shooting')
 pe.run_parameter_estimation()
